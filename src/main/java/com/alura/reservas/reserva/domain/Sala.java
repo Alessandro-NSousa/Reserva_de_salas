@@ -1,5 +1,6 @@
 package com.alura.reservas.reserva.domain;
 
+import com.alura.reservas.reserva.dto.SalaRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,6 +58,15 @@ public class Sala {
         this.capacidade = capacidade;
         this.ativa = true;
     }
+
+    public Sala(SalaRequestDTO dto) {
+        if (capacidade == null || capacidade <= 0) {
+            throw new IllegalArgumentException("Capacidade da sala deve ser maior que zero");
+        }
+        this.nome = dto.nome();
+        this.capacidade = dto.capacidade();
+    }
+
 
     public boolean isAtiva() {
         return ativa;

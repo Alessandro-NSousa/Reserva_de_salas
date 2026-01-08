@@ -3,6 +3,7 @@ package com.alura.reservas.reserva.service;
 import com.alura.reservas.reserva.domain.Sala;
 import com.alura.reservas.reserva.dto.SalaRequestDTO;
 import com.alura.reservas.reserva.dto.SalaResponseDTO;
+import com.alura.reservas.reserva.dto.SalaUpdateDTO;
 import com.alura.reservas.reserva.repository.SalaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +45,28 @@ public class SalaService {
         salaRepository.deleteById(sala.getId());
     }
 
-    public void toAlter(AprovacaoAdocaoDto dto) {
-        Adocao adocao = repository.getReferenceById(dto.idAdocao());
-        adocao.marcarComoAprovada();
+    public Sala toAlter(Long id, SalaUpdateDTO dto) {
+        Sala sala = salaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sala não encontrada"));
 
-        emailService.enviarEmail(
-                adocao.getPet().getAbrigo().getEmail(),
-                "Adoção aprovada",
-                "Parabéns " +adocao.getTutor().getNome() +"!\n\nSua adoção do pet " +adocao.getPet().getNome() +", solicitada em " +adocao.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +", foi aprovada.\nFavor entrar em contato com o abrigo " +adocao.getPet().getAbrigo().getNome() +" para agendar a busca do seu pet.");
+        if (dto.nome() != null && !dto.nome().equals(sala.getNome())) {
+            if (salaRepository.existsByNomeAndIdNot(dto.nome(), id)) {
+                throw new IllegalArgumentException("Já existe uma sala com esse nome");
+            }
+            sala.setNome(dto.nome());
+        }
+
+        if (dto.capacidade() != null) {
+            if (dto.capacidade() <= 0) {
+                throw new IllegalArgumentException("Capacidade deve ser maior que zero");
+            }
+            sala.setCapacidade(dto.capacidade());
+        }
+
+        if (dto.ativa() != null) {
+            sala.setAtiva(dto.ativa());
+        }
+
+        return salaRepository.save(sala);
     }
 }

@@ -60,7 +60,7 @@ public class Sala {
     }
 
     public Sala(SalaRequestDTO dto) {
-        if (capacidade == null || capacidade <= 0) {
+        if (dto.capacidade() == null || dto.capacidade() <= 0) {
             throw new IllegalArgumentException("Capacidade da sala deve ser maior que zero");
         }
         this.nome = dto.nome();

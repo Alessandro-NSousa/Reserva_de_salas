@@ -2,6 +2,7 @@ package com.alura.reservas.reserva.controller;
 
 import com.alura.reservas.reserva.dto.SalaRequestDTO;
 import com.alura.reservas.reserva.dto.SalaResponseDTO;
+import com.alura.reservas.reserva.dto.SalaUpdateDTO;
 import com.alura.reservas.reserva.service.SalaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,10 +44,10 @@ public class SalaController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/aprovar")
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<String> aprovar(@RequestBody @Valid AprovacaoAdocaoDto dto) {
-        this.adocaoService.aprovar(dto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SalaResponseDTO> toAlter(@PathVariable Long id, @RequestBody SalaUpdateDTO dto) {
+        var sala = this.salaService.toAlter(id,dto);
+        return ResponseEntity.ok(new SalaResponseDTO(sala));
     }
 }

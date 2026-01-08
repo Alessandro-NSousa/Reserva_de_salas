@@ -10,7 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class TratadorDeErros {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity tratarErro404() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro: Identificador não Encontrado!" );
+    public ResponseEntity tratarErro404(EntityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity tratarDeValidacao(ValidacaoException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage() );
     }
 }

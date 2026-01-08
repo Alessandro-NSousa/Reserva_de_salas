@@ -1,5 +1,7 @@
 package com.alura.reservas.reserva.domain;
 
+import com.alura.reservas.reserva.dto.UsuarioRequestDTO;
+import com.alura.reservas.reserva.dto.UsuarioUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,5 +46,15 @@ public class Usuario {
     public Usuario(String nome, String email) {
         this.nome = nome;
         this.email = email;
+    }
+
+    public Usuario(UsuarioRequestDTO dto) {
+        this.nome = dto.nome();
+        this.email = dto.email();
+    }
+
+    public void updateData(UsuarioUpdateDto dto) {
+        this.nome = dto.nome();
+        this.email = dto.email();
     }
 }

@@ -35,7 +35,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> listAll(@PathVariable Long id) {
+    public ResponseEntity<UsuarioResponseDTO> findBy(@PathVariable Long id) {
         var usuario = service.findUsuario(id);
 
         return ResponseEntity.ok().body(usuario);

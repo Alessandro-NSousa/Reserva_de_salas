@@ -1,6 +1,7 @@
 package com.alura.reservas.reserva.domain;
 
 import com.alura.reservas.reserva.domain.enumeration.StatusReserva;
+import com.alura.reservas.reserva.dto.ReservaRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -58,7 +59,7 @@ public class Reserva {
     @Column(nullable = false)
     private StatusReserva status;
 
-    protected Reserva() {}
+    public Reserva() {}
 
     public Reserva(Sala sala, Usuario usuario,
                    LocalDateTime inicio, LocalDateTime fim) {
